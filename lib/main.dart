@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_user_auth_without_firebase/google.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -16,6 +17,17 @@ class MyApp extends StatelessWidget {
       print("gauth: ${googleKey.accessToken}");
       print("gauth: ${googleKey.idToken}");
     });
+  }
+
+  void facebookSignIn() async {
+    final LoginResult result = await FacebookAuth.instance
+        .login(); // by default we request the email and the public profile
+// or FacebookAuth.i.login()
+    if (result.status == LoginStatus.success) {
+      // you are logged
+      final AccessToken accessToken = result.accessToken!;
+      print("fauth:$accessToken");
+    }
   }
 
   @override
@@ -40,6 +52,18 @@ class MyApp extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   "Google sign In",
+                  style: TextStyle(fontSize: 30),
+                ),
+              )),
+          SizedBox(
+            height: 20,
+          ),
+          ElevatedButton(
+              onPressed: facebookSignIn,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  "Facebook sign In",
                   style: TextStyle(fontSize: 30),
                 ),
               ))
